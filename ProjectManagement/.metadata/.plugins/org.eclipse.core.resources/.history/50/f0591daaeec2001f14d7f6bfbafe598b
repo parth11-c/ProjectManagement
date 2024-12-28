@@ -1,0 +1,2 @@
+spring.application.name=ProjectManagenent
+server.port = 8081

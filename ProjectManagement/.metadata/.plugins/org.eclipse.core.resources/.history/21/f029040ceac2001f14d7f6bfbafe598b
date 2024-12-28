@@ -1,0 +1,59 @@
+package com.data.controller;
+
+import com.data.entity.Users;
+import com.data.service.UService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/")
+public class UController {
+
+    @Autowired
+    private UService UsersService;
+
+    // Save or update a user
+    @PostMapping("/save")
+    public ResponseEntity<Users> saveOrUpdateUser(@RequestBody Users user) {
+        Users savedUser = UsersService.saveOrUpdateUsers(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    // Get all users
+    @GetMapping("/")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        List<Users> users = UsersService.getAllUserss();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    // Get user by ID
+    @GetMapping("/{Username}")
+    public ResponseEntity<Users> getUserById(@PathVariable String id) {
+        Users user = UsersService.getUsersById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    // Delete user by ID
+    @DeleteMapping("/delete/{Username}")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+        UsersService.deleteUsersById(id);
+        return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
+    }
+
+    // Update user by username
+    @PutMapping("/update/{Username}")
+    public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody Users updatedUser) {
+        boolean isUpdated = UsersService.updateUsersByUsername(username, updatedUser) != null;
+        if (isUpdated) {
+            return new ResponseEntity<>("User updated successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not found or update failed!", HttpStatus.NOT_FOUND);
+        }
+    }
+}

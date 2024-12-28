@@ -1,0 +1,68 @@
+package com.data.controller;
+
+
+
+ import com.data.entity.Users;
+import com.data.service.UService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+ 
+
+@RestController
+@RequestMapping("/api/v1")
+public class UController {
+
+    @Autowired
+    private UService UsersService;
+  
+    
+    @PostMapping("/save")
+    public ResponseEntity<Users> saveOrUpdateUser(@RequestBody Users user) {
+        Users savedUser = UsersService.saveOrUpdateUsers(user);
+        return ResponseEntity.ok(savedUser);
+    } 
+    
+    
+ 
+
+    // Get all users
+    @GetMapping("/")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        return new ResponseEntity<>(UsersService.getAllUserss(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Users> getUserById(@PathVariable String id) {
+        Users user = UsersService.getUsersById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
+
+    // Delete user by ID
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+    	UsersService.deleteUsersById(id);
+        return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
+    }
+    
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String>  entity   (@PathVariable String Usersname) {
+    	UsersService.getUsersByUsersname(  Usersname);
+        return new ResponseEntity<>("User Upadted  successfully!", HttpStatus.OK);
+    }
+     
+    
+    
+    
+    
+    
+}

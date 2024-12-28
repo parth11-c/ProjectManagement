@@ -1,0 +1,54 @@
+package com.data.service;
+
+
+import org.springframework.stereotype.Service;
+
+import com.data.entity.Users;
+import com.data.repository.URepo;
+ 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UService {
+
+    @Autowired
+    private URepo UsersRepository;
+
+     public Users saveOrUpdateUsers(Users Users) {
+        return UsersRepository.save(Users);
+    }
+
+     public List<Users> getAllUserss() {
+        return UsersRepository.findAll();
+    }
+
+     public Optional<Users> getUsersByUsersname(String Usersname) {
+        return UsersRepository.findByUsername(Usersname);
+    }
+
+     public Optional<Users> getUsersById(String id) {
+        return UsersRepository.findById(id);
+    }
+
+     public Optional<Users> updateUsersByName(String name, Users updatedUsers) {
+    	    return UsersRepository.findByUsername(name).map(existingUser -> {
+    	        existingUser.setPassword(updatedUsers.getPassword());
+    	        existingUser.setEmail(updatedUsers.getEmail());
+    	        existingUser.setName(updatedUsers.getName());
+    	        return UsersRepository.save(existingUser);
+    	    });
+    	}
+
+
+   public void deleteUsersByUsersname(String Usersname) {
+        UsersRepository.deleteByUsername(Usersname);
+    }
+
+    // Delete a Users by ID
+    public void deleteUsersById(String id) {
+        UsersRepository.deleteById(id);
+    }
+}

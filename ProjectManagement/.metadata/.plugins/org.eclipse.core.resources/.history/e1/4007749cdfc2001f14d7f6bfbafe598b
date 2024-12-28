@@ -1,0 +1,30 @@
+package com.data.controller;
+
+
+
+ import com.data.entity.Users;
+import com.data.service.UService;
+ import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/Userss")
+public class UController {
+
+    @Autowired
+    private UService UsersService;
+  
+    
+    @PostMapping("/save")
+    public ResponseEntity<Users> saveOrUpdateUser(@RequestBody Users user) {
+        Users savedUser = UsersService.saveOrUpdateUsers(user);
+        return ResponseEntity.ok(savedUser);
+    } 
+    
+    
+    
+}

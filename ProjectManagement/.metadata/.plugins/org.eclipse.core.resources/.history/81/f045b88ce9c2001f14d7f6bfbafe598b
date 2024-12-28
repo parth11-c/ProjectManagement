@@ -1,0 +1,18 @@
+package com.data.entity;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.Data;
+
+@Data
+@Document(collection = "projectManagement") // Correct attribute for collection name
+public class Users {
+
+    @Id
+    private String id;
+    private String name;
+    private String email;
+    private String username; // Ensure consistent field naming
+    private String password;
+}
